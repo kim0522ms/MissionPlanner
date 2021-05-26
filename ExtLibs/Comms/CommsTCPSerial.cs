@@ -95,7 +95,7 @@ namespace MissionPlanner.Comms
         public bool DtrEnable { get; set; }
         public string Host { get; set; } = "";
 
-        public void Open()
+        public void Open(string host = null, string Port = null)
         {
             try
             {
@@ -107,31 +107,34 @@ namespace MissionPlanner.Comms
                     return;
                 }
 
-                var dest = Port;
-                var host = "127.0.0.1";
-
-                if (Host == "")
+                if (host == null)
                 {
-                    dest = OnSettings("TCP_port", dest);
+                    var dest = Port;
+                    host = "127.0.0.1";
 
-                    host = OnSettings("TCP_host", host);
-
-                    if (!reconnectnoprompt)
+                    if (Host == "")
                     {
-                        if (inputboxreturn.Cancel == OnInputBoxShow("remote host",
-                            "Enter host name/ip (ensure remote end is already started)", ref host))
-                            throw new Exception("Canceled by request");
-                        if (inputboxreturn.Cancel == OnInputBoxShow("remote Port", "Enter remote port", ref dest))
-                            throw new Exception("Canceled by request");
+                        dest = OnSettings("TCP_port", dest);
+
+                        host = OnSettings("TCP_host", host);
+
+                        if (!reconnectnoprompt)
+                        {
+                            if (inputboxreturn.Cancel == OnInputBoxShow("remote host",
+                                "Enter host name/ip (ensure remote end is already started)", ref host))
+                                throw new Exception("Canceled by request");
+                            if (inputboxreturn.Cancel == OnInputBoxShow("remote Port", "Enter remote port", ref dest))
+                                throw new Exception("Canceled by request");
+                        }
+
+                    }
+                    else
+                    {
+                        host = Host;
                     }
 
+                    Port = dest;
                 }
-                else
-                {
-                    host = Host;
-                }
-
-                Port = dest;
 
                 log.InfoFormat("TCP Open {0} {1}", host, Port);
 
@@ -390,6 +393,11 @@ namespace MissionPlanner.Comms
             }
 
             // free native resources
+        }
+
+        public void Open()
+        {
+            throw new NotImplementedException();
         }
     }
 }

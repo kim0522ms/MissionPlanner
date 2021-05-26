@@ -68,7 +68,7 @@ namespace MissionPlanner.Comms
 
         public bool DtrEnable { get; set; }
 
-        public void Open()
+        public void Open(string host = null, string Port = null)
         {
             if (client.Client.Connected)
             {
@@ -78,23 +78,26 @@ namespace MissionPlanner.Comms
 
             log.Info("UDP Open");
 
-            var dest = Port;
-            var host = "127.0.0.1";
-
-            dest = OnSettings("UDP_port" + ConfigRef, dest);
-
-            host = OnSettings("UDP_host" + ConfigRef, host);
-
-            //if (!MainV2.MONO)
+            if(host == null)
             {
-                if (inputboxreturn.Cancel == OnInputBoxShow("remote host",
-                        "Enter host name/ip (ensure remote end is already started)", ref host))
-                    throw new Exception("Canceled by request");
-                if (inputboxreturn.Cancel == OnInputBoxShow("remote Port", "Enter remote port", ref dest))
-                    throw new Exception("Canceled by request");
+                var dest = Port;
+                host = "127.0.0.1";
+
+                dest = OnSettings("UDP_port" + ConfigRef, dest);
+                host = OnSettings("UDP_host" + ConfigRef, host);
+
+                //if (!MainV2.MONO)
+                {
+                    if (inputboxreturn.Cancel == OnInputBoxShow("remote host",
+                            "Enter host name/ip (ensure remote end is already started)", ref host))
+                        throw new Exception("Canceled by request");
+                    if (inputboxreturn.Cancel == OnInputBoxShow("remote Port", "Enter remote port", ref dest))
+                        throw new Exception("Canceled by request");
+                }
+
+                Port = dest;
             }
 
-            Port = dest;
 
             OnSettings("UDP_port" + ConfigRef, Port, true);
             OnSettings("UDP_host" + ConfigRef, host, true);
@@ -355,6 +358,11 @@ namespace MissionPlanner.Comms
             }
 
             // free native resources
+        }
+
+        public void Open()
+        {
+            throw new NotImplementedException();
         }
     }
 }

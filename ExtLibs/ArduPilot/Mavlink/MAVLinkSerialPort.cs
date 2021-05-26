@@ -260,6 +260,11 @@ namespace MissionPlanner.Comms
             Close();
         }
 
+        public void Open(string host, string port)
+        {
+            throw new NotImplementedException();
+        }
+
         public System.IO.Stream BaseStream
         {
             get { throw new NotImplementedException(); }

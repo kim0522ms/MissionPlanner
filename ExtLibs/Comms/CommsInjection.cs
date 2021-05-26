@@ -37,7 +37,6 @@ namespace MissionPlanner.Comms
         {
             _buffer.Clear();
         }
-
         public int Read(byte[] buffer, int offset, int count)
         {
             var counttimeout = 0;
@@ -137,6 +136,11 @@ namespace MissionPlanner.Comms
         public void Dispose()
         {
             Close();
+        }
+
+        public void Open(string host, string port)
+        {
+            throw new NotImplementedException();
         }
 
         public Stream BaseStream { get; }

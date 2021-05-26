@@ -90,7 +90,7 @@ namespace MissionPlanner.Comms
 
         public bool DtrEnable { get; set; }
 
-        public void Open()
+        public void Open(string host = null, string Port = null)
         {
             if (IsOpen)
             {
@@ -121,7 +121,14 @@ namespace MissionPlanner.Comms
                 }
             });
         }
-        
+
+        public void OpenNoDialog(string host, string port)
+        {
+            // MSKim [2021.05.26]
+            // TODO : Implementation
+        }
+
+
         MemoryStream readMemoryStream = new MemoryStream();
         private int readCursor = 0;
         SemaphoreSlim clientSemaphoreSlim = new SemaphoreSlim(1);
@@ -376,6 +383,11 @@ namespace MissionPlanner.Comms
             }
 
             // free native resources
+        }
+
+        public void Open()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -49,7 +49,9 @@ namespace MissionPlanner.Comms
         void DiscardInBuffer();
 
         //void DiscardOutBuffer();
+
         void Open();
+        void Open(string host, string port);
 
         int Read(byte[] buffer, int offset, int count);
 

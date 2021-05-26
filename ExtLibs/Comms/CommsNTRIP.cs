@@ -94,6 +94,11 @@ namespace MissionPlanner.Comms
 
         public void Open()
         {
+            this.Open(null, null);
+        }
+
+        public void Open(string host, string Port)
+        {
             if (client.Client.Connected)
             {
                 log.Warn("ntrip socket already open");

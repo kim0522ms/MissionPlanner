@@ -95,7 +95,13 @@ namespace MissionPlanner.Comms
 
         public bool DtrEnable { get; set; }
 
+
         public void Open()
+        {
+            this.Open(null, null);
+        }
+
+        public void Open(string host, string Port)
         {
             if (client.Client.Connected || IsOpen)
             {
@@ -109,10 +115,13 @@ namespace MissionPlanner.Comms
 
             dest = OnSettings("UDP_port" + ConfigRef, dest);
 
-            if (inputboxreturn.Cancel == OnInputBoxShow("Listern Port",
+            if (host == null && Port == null)
+            {
+                if (inputboxreturn.Cancel == OnInputBoxShow("Listern Port",
                     "Enter Local port (ensure remote end is already sending)", ref dest)) return;
-            Port = dest;
-
+                Port = dest;
+            }
+            
             OnSettings("UDP_port" + ConfigRef, Port, true);
 
             //######################################

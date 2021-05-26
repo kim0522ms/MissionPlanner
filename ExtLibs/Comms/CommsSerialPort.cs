@@ -148,6 +148,11 @@ namespace MissionPlanner.Comms
             _baseport.Open();
         }
 
+        public void Open(string host, string Port)
+        {
+            return;
+        }
+
         public int Read(byte[] buffer, int offset, int count)
         {
             return _baseport.Read(buffer, offset, count);
@@ -550,6 +555,11 @@ namespace MissionPlanner.Comms
             }
 
             Console.WriteLine("toggleDTR done " + IsOpen);
+        }
+
+        public void Open(string host, string port)
+        {
+            throw new NotImplementedException();
         }
     }
 

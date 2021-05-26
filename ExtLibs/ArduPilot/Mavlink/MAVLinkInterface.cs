@@ -27,6 +27,8 @@ namespace MissionPlanner
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private ICommsSerial _baseStream;
+        private string _NoDialog_Host;
+        private string _NoDialog_Port;
 
         public ICommsSerial BaseStream
         {
@@ -522,12 +524,15 @@ namespace MissionPlanner
             Open(false);
         }
 
-        public void Open(bool getparams, bool skipconnectedcheck = false)
+        public void Open(bool getparams, bool skipconnectedcheck = false, string host= null, string Port = null)
         {
             if (BaseStream == null || BaseStream.IsOpen && !skipconnectedcheck)
                 return;
 
             MAVlist.Clear();
+
+            this._NoDialog_Host = host;
+            this._NoDialog_Port = Port;
 
             frmProgressReporter = CreateIProgressReporterDialogue(Strings.ConnectingMavlink);
 
@@ -544,7 +549,7 @@ namespace MissionPlanner
 
             frmProgressReporter.RunBackgroundOperationAsync();
 
-            frmProgressReporter.Dispose();
+            frmProgressReporter.Dispose();   
 
             if (_ParamListChanged != null)
             {
@@ -594,7 +599,10 @@ namespace MissionPlanner
                         };
                     }
 
-                    BaseStream.Open();
+                    if (_NoDialog_Host == null)
+                        BaseStream.Open();
+                    else
+                        BaseStream.Open(_NoDialog_Host, _NoDialog_Port);
 
                     BaseStream.DiscardInBuffer();
 

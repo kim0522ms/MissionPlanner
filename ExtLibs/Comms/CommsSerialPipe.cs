@@ -147,6 +147,11 @@ namespace MissionPlanner.Comms
             }
         }
 
+        public void Open(string host, string Port)
+        {
+            return;
+        }
+
         public int Read(byte[] buffer, int offset, int count)
         {
             var timeout = DateTime.Now.AddMilliseconds(ReadTimeout);

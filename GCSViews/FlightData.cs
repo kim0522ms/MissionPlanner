@@ -913,6 +913,11 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        public void NoDialog_ARM()
+        {
+            this.BUT_ARM_Click(null, null);
+        }
+
         private void BUT_ARM_Click(object sender, EventArgs e)
         {
             if (!MainV2.comPort.BaseStream.IsOpen)
@@ -1503,6 +1508,12 @@ namespace MissionPlanner.GCSViews
                 selectedscript = "";
             }
         }
+        public void NoDialog_SetMode(string mode)
+        {
+            this.CMB_modes.Text = mode;
+            MainV2.comPort.setMode(CMB_modes.Text);
+        }
+
 
         private void BUT_setmode_Click(object sender, EventArgs e)
         {
@@ -1540,6 +1551,12 @@ namespace MissionPlanner.GCSViews
             lbl_playbackspeed.Text = "x " + LogPlayBackSpeed;
         }
 
+        public void NoDialog_ActionDo(string action)
+        {
+            CMB_action.Text = action;
+            this.BUTactiondo.PerformClick();
+        }
+
         private void BUTactiondo_Click(object sender, EventArgs e)
         {
             try
@@ -1574,10 +1591,12 @@ namespace MissionPlanner.GCSViews
 
                 return;
             }
+            int dialogResult = (int)DialogResult.Yes;
 
-            if (
-                CustomMessageBox.Show("Are you sure you want to do " + CMB_action.Text + " ?", "Action",
-                    MessageBoxButtons.YesNo) == (int) DialogResult.Yes)
+            if (MainV2.NoDialogMode != true)
+                CustomMessageBox.Show("Are you sure you want to do " + CMB_action.Text + " ?", "Action", MessageBoxButtons.YesNo);
+
+            if (dialogResult == (int)DialogResult.Yes)
             {
                 try
                 {

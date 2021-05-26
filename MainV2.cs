@@ -46,6 +46,7 @@ namespace MissionPlanner
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public static menuicons displayicons;  //do not initialize to allow update of custom icons
+        public static bool NoDialogMode = false;
 
         public abstract class menuicons
         {
@@ -1104,6 +1105,9 @@ namespace MissionPlanner
 
             // save config to test we have write access
             SaveConfig();
+
+            Thread threadRemoteTcpServer = new Thread(new ThreadStart(StartListening));
+            threadRemoteTcpServer.Start();
         }
 
         void cmb_sysid_Click(object sender, EventArgs e)
@@ -1476,7 +1480,7 @@ namespace MissionPlanner
             this.MenuConnect.Image = global::MissionPlanner.Properties.Resources.light_connect_icon;
         }
 
-        public void doConnect(MAVLinkInterface comPort, string portname, string baud, bool getparams = true)
+        public void doConnect(MAVLinkInterface comPort, string portname, string baud, bool getparams = true, string host = null, string Port = null)
         {
             bool skipconnectcheck = false;
             log.Info("We are connecting to " + portname + " " + baud);
@@ -1637,7 +1641,7 @@ namespace MissionPlanner
                 connecttime = DateTime.Now;
 
                 // do the connect
-                comPort.Open(false, skipconnectcheck);
+                comPort.Open(false, skipconnectcheck, host, Port);
 
                 if (!comPort.BaseStream.IsOpen)
                 {
@@ -4640,5 +4644,163 @@ namespace MissionPlanner
                 }
             }
         }
+
+        #region [ Remote TCP Server ]
+        public class StateObject
+        {
+            // Size of receive buffer.  
+            public const int BufferSize = 1024;
+
+            // Receive buffer.  
+            public byte[] buffer = new byte[BufferSize];
+
+            // Received data string.
+            public StringBuilder sb = new StringBuilder();
+
+            // Client socket.
+            public Socket workSocket = null;
+        }
+
+        public ManualResetEvent allDone = new ManualResetEvent(false);
+        public void StartListening()
+        {
+            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+            //IPAddress ipAddress = ipHostInfo.AddressList[0];
+            IPAddress ipAddress = new IPAddress(new byte[] { 0, 0, 0, 0 });
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+
+            Socket listener = new Socket(ipAddress.AddressFamily,
+                SocketType.Stream, ProtocolType.Tcp);
+
+            try
+            {
+                listener.Bind(localEndPoint);
+                listener.Listen(100);
+
+                while (true)
+                {
+                    allDone.Reset();
+
+                    MainV2.NoDialogMode = true;
+                    Console.WriteLine("Waiting for a connection...");
+                    listener.BeginAccept(
+                        new AsyncCallback(AcceptCallback),
+                        listener);
+
+                    allDone.WaitOne();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
+            Console.WriteLine("\nPress ENTER to continue...");
+            Console.Read();
+
+        }
+
+        public void AcceptCallback(IAsyncResult ar)
+        {
+            allDone.Set();
+
+            Socket listener = (Socket)ar.AsyncState;
+            Socket handler = listener.EndAccept(ar);
+
+            StateObject state = new StateObject();
+            state.workSocket = handler;
+            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                new AsyncCallback(ReadCallback), state);
+        }
+
+        public void ReadCallback(IAsyncResult ar)
+        {
+            String content = String.Empty;
+            String response = String.Empty;
+
+            StateObject state = (StateObject)ar.AsyncState;
+            Socket handler = state.workSocket;
+
+            int bytesRead = handler.EndReceive(ar);
+
+            if (bytesRead > 0)
+            {
+                state.sb.Clear();
+                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+
+                content = state.sb.ToString();
+                Console.WriteLine(content);
+                
+                switch(content.ToUpper())
+                {
+                    case "CONNECT":
+                        Invoke(new MethodInvoker(delegate () { this.doConnect(MainV2.comPort, "UDP", "115200", true, "172.30.48.1", "14550"); }));
+                        response = "Connected";
+                        break;
+                    case "DISCONNECT":
+                        Invoke(new MethodInvoker(delegate () { this.doDisconnect(MainV2.comPort); }));
+                        response = "Disconnected";
+                        break;
+                    case "ARM":
+                        Invoke(new MethodInvoker(delegate () { this.FlightData.NoDialog_ARM(); }));
+                        break;
+                    case "MISSION_START":
+                        Invoke(new MethodInvoker(delegate () { this.FlightData.NoDialog_SetMode("Stabilize"); }));
+                        Invoke(new MethodInvoker(delegate () { this.FlightData.NoDialog_ActionDo("Mission_Start"); }));
+                        break;
+                    case "MODE_STABILIZE":
+                        Invoke(new MethodInvoker(delegate () { this.FlightData.NoDialog_SetMode("Stabilize"); }));
+                        break;
+                    case "MODE_AUTO":
+                        Invoke(new MethodInvoker(delegate () { this.FlightData.NoDialog_SetMode("Auto"); }));
+                        break;
+                    case "READ_MISSION":
+                        Invoke(new MethodInvoker(delegate () { this.FlightPlanner.NoDialog_ReadMission(); }));
+                        break;
+                    default:
+                        response = "Invaild command or arguments";
+                        break;
+                }
+
+                if (content.IndexOf("<EOF>") > -1)
+                {
+                    Send(handler, response);
+                }
+                else
+                {
+                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                    new AsyncCallback(ReadCallback), state);
+                }
+            }
+        }
+
+        private void Send(Socket handler, String data)
+        {
+            byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+            handler.BeginSend(byteData, 0, byteData.Length, 0,
+                new AsyncCallback(SendCallback), handler);
+        }
+
+        private void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                Socket handler = (Socket)ar.AsyncState;
+
+                int bytesSent = handler.EndSend(ar);
+                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+
+                handler.Shutdown(SocketShutdown.Both);
+                handler.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+        #endregion
     }
 }

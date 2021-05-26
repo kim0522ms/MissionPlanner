@@ -571,6 +571,11 @@ namespace MissionPlanner.GCSViews
             setfromMap(lat, lng, alt);
         }
 
+        public void NoDialog_ReadMission()
+        {
+            this.BUT_read_Click(null, null);
+        }
+
         /// <summary>
         /// Reads the EEPROM from a com port
         /// </summary>
@@ -585,11 +590,12 @@ namespace MissionPlanner.GCSViews
                 }
                 else
                 {
-                    if (
-                        CustomMessageBox.Show("This will clear your existing points, Continue?", "Confirm",
-                            MessageBoxButtons.OKCancel) != (int)DialogResult.OK)
+                    if (MainV2.NoDialogMode == false)
                     {
-                        return;
+                        if (CustomMessageBox.Show("This will clear your existing points, Continue?", "Confirm", MessageBoxButtons.OKCancel) != (int)DialogResult.OK)
+                        {
+                            return;
+                        }
                     }
                 }
             }

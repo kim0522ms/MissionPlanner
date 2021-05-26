@@ -45,6 +45,7 @@ namespace MissionPlanner.Comms
             length = BaseStream.Length;
         }
 
+
         public int Read(byte[] buffer, int offset, int count)
         {
             if (!IsOpen)
@@ -208,6 +209,11 @@ namespace MissionPlanner.Comms
         public void SetLength(long length)
         {
             this.length = length;
+        }
+
+        public void Open(string host, string port)
+        {
+            throw new NotImplementedException();
         }
     }
 }
