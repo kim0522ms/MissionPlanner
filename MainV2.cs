@@ -1573,7 +1573,7 @@ namespace MissionPlanner
                 log.Info("Set Baudrate");
                 try
                 {
-                    if (baud != "" && baud != "0")
+                    if (baud != "" && baud != "0" && baud.IsNumber())
                         comPort.BaseStream.BaudRate = int.Parse(baud);
                 }
                 catch (Exception exp)
@@ -1660,67 +1660,10 @@ namespace MissionPlanner
 
                 if (getparams)
                 {
-                    var ftpfile = false;
-                    if ((MainV2.comPort.MAV.cs.capabilities & (int) MAVLink.MAV_PROTOCOL_CAPABILITY.FTP) > 0)
-                    {
-                        var prd = new ProgressReporterDialogue();
-                        prd.DoWork += (IProgressReporterDialogue sender) =>
-                        {
-                            sender.UpdateProgressAndStatus(-1, "Checking for Param MAVFTP");
-                            var cancel = new CancellationTokenSource();
-                            var paramfileTask = Task.Run<MemoryStream>(() =>
-                            {
-                                return new MAVFtp(comPort, comPort.MAV.sysid, comPort.MAV.compid).GetFile(
-                                    "@PARAM/param.pck", cancel, false, 110);
-                            });
-                            while (!paramfileTask.IsCompleted)
-                            {
-                                if (sender.doWorkArgs.CancelRequested)
-                                {
-                                    cancel.Cancel();
-                                    sender.doWorkArgs.CancelAcknowledged = true;
-                                }
-
-                                Thread.Sleep(10);
-                            }
-
-                            var paramfile = paramfileTask.Result;
-                            if (paramfile != null && paramfile.Length > 0)
-                            {
-                                var mavlist = parampck.unpack(paramfile.ToArray());
-                                if (mavlist != null)
-                                {
-                                    comPort.MAVlist[comPort.MAV.sysid, comPort.MAV.compid].param.Clear();
-                                    comPort.MAVlist[comPort.MAV.sysid, comPort.MAV.compid].param.TotalReported =
-                                        mavlist.Count;
-                                    comPort.MAVlist[comPort.MAV.sysid, comPort.MAV.compid].param.AddRange(mavlist);
-                                    var gen = new MAVLink.MavlinkParse();
-                                    mavlist.ForEach(a =>
-                                    {
-                                        comPort.MAVlist[comPort.MAV.sysid, comPort.MAV.compid].param_types[a.Name] =
-                                            a.Type;
-                                        MainV2.comPort.SaveToTlog(gen.GenerateMAVLinkPacket10(
-                                            MAVLink.MAVLINK_MSG_ID.PARAM_VALUE,
-                                            new MAVLink.mavlink_param_value_t((float) a.Value, (ushort) mavlist.Count,
-                                                0,
-                                                a.Name.MakeBytesSize(16), (byte) a.Type)));
-                                    });
-
-                                    ftpfile = true;
-                                }
-                            }
-                        };
-
-                        prd.RunBackgroundOperationAsync();
-                    }
-
-                    if (!ftpfile)
-                    {
-                        if (Settings.Instance.GetBoolean("Params_BG", false))
-                            Task.Run(() => { comPort.getParamList(comPort.MAV.sysid, comPort.MAV.compid); });
-                        else
-                            comPort.getParamList();
-                    }
+                    if (Settings.Instance.GetBoolean("Params_BG", false))
+                        Task.Run(() => { comPort.getParamListMavftp(comPort.MAV.sysid, comPort.MAV.compid); });
+                    else
+                        comPort.getParamList();
                 }
 
                 _connectionControl.UpdateSysIDS();
@@ -4309,7 +4252,7 @@ namespace MissionPlanner
             public int dbcp_size;
             public int dbcp_devicetype;
             public int dbcp_reserved; // MSDN say "do not use"
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 255)] public byte[] dbcp_name;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)] public string dbcp_name;
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -4323,7 +4266,7 @@ namespace MissionPlanner
             public Byte[]
                 dbcc_classguid;
 
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 255)] public Byte[] dbcc_name;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 255)] public string dbcc_name;
         }
 
 
@@ -4387,14 +4330,12 @@ namespace MissionPlanner
                                 case DBT_DEVTYP_DEVICEINTERFACE:
                                     DEV_BROADCAST_DEVICEINTERFACE inter = new DEV_BROADCAST_DEVICEINTERFACE();
                                     Marshal.PtrToStructure(m.LParam, inter);
-                                    log.InfoFormat("Interface {0}",
-                                        ASCIIEncoding.Unicode.GetString(inter.dbcc_name, 0, inter.dbcc_size - (4 * 3)));
+                                    log.InfoFormat("Interface {0}",inter.dbcc_name);
                                     break;
                                 case DBT_DEVTYP_PORT:
                                     DEV_BROADCAST_PORT prt = new DEV_BROADCAST_PORT();
                                     Marshal.PtrToStructure(m.LParam, prt);
-                                    log.InfoFormat("port {0}",
-                                        ASCIIEncoding.Unicode.GetString(prt.dbcp_name, 0, prt.dbcp_size - (4 * 3)));
+                                    log.InfoFormat("port {0}",prt.dbcp_name);
                                     break;
                             }
                         }
