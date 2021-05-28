@@ -161,7 +161,7 @@ namespace MissionPlanner.Utilities
             }
         }
 
-        private ushort _seq;
+        public ushort _seq;
         public byte frame;
         public object Tag;
 

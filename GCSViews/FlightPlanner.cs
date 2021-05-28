@@ -571,11 +571,6 @@ namespace MissionPlanner.GCSViews
             setfromMap(lat, lng, alt);
         }
 
-        public void NoDialog_ReadMission()
-        {
-            this.BUT_read_Click(null, null);
-        }
-
         /// <summary>
         /// Reads the EEPROM from a com port
         /// </summary>
@@ -590,12 +585,9 @@ namespace MissionPlanner.GCSViews
                 }
                 else
                 {
-                    if (MainV2.NoDialogMode == false)
+                    if (CustomMessageBox.Show("This will clear your existing points, Continue?", "Confirm", MessageBoxButtons.OKCancel) != (int)DialogResult.OK)
                     {
-                        if (CustomMessageBox.Show("This will clear your existing points, Continue?", "Confirm", MessageBoxButtons.OKCancel) != (int)DialogResult.OK)
-                        {
-                            return;
-                        }
+                        return;
                     }
                 }
             }
@@ -3660,6 +3652,36 @@ namespace MissionPlanner.GCSViews
 
             return new RectLatLng(maxy, minx, Math.Abs(maxx - minx), Math.Abs(miny - maxy));
         }
+        #region [ Remote Mode ]
+        public List<Locationwp> NoDialog_ReadWayPoints(MAVLink.MAV_MISSION_TYPE type)
+        {
+            try
+            {
+                return Task.Run(async () => await mav_mission.download(MainV2.comPort, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid, type).ConfigureAwait(false)).Result;
+            }
+            catch
+            {
+                // 2021.05.27 MS Kim
+                // TODO : Handle exception if read waypoints from vehicle is failed
+                return null;
+            }
+        }
+
+        public bool NoDialog_WriteWayPoints(MAVLink.MAV_MISSION_TYPE type, List<Locationwp> waypoints)
+        {
+            try
+            {
+                Task.Run(async () => await mav_mission.upload(MainV2.comPort, MainV2.comPort.MAV.sysid, MainV2.comPort.MAV.compid, type, waypoints).ConfigureAwait(false));
+            }
+            catch
+            {
+                // 2021.05.27 MS Kim
+                // TODO : Handle exception if write waypoints to vehicle is failed
+                return false;
+            }
+            return true;
+        }
+        #endregion
 
         private void getWPs(IProgressReporterDialogue sender)
         {

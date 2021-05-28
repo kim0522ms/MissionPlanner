@@ -1554,7 +1554,7 @@ namespace MissionPlanner.GCSViews
         public void NoDialog_ActionDo(string action)
         {
             CMB_action.Text = action;
-            this.BUTactiondo.PerformClick();
+            this.BUTactiondo_Click(null, null);
         }
 
         private void BUTactiondo_Click(object sender, EventArgs e)
@@ -1593,14 +1593,14 @@ namespace MissionPlanner.GCSViews
             }
             int dialogResult = (int)DialogResult.Yes;
 
-            if (MainV2.NoDialogMode != true)
-                CustomMessageBox.Show("Are you sure you want to do " + CMB_action.Text + " ?", "Action", MessageBoxButtons.YesNo);
+            CustomMessageBox.Show("Are you sure you want to do " + CMB_action.Text + " ?", "Action", MessageBoxButtons.YesNo);
 
             if (dialogResult == (int)DialogResult.Yes)
             {
                 try
                 {
-                    ((Control) sender).Enabled = false;
+                    if (sender != null)
+                        ((Control) sender).Enabled = false;
 
                     int param1 = 0;
                     int param2 = 0;
@@ -1642,7 +1642,8 @@ namespace MissionPlanner.GCSViews
                     CustomMessageBox.Show(Strings.CommandFailed, Strings.ERROR);
                 }
 
-                ((Control) sender).Enabled = true;
+                if (sender != null)
+                    ((Control) sender).Enabled = true;
             }
         }
 

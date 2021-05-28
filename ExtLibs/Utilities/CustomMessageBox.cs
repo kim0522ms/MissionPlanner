@@ -7,6 +7,8 @@ namespace System
 {
     public static class CustomMessageBox
     {
+        public static bool _NoDialogMode = false;
+
         public delegate DialogResult ShowDelegate(string text, string caption = "",
             MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None, string YesText = "Yes", string NoText = "No");
 
@@ -25,12 +27,17 @@ namespace System
         public static int Show(string text, string caption = "", object MessageBoxButtons = null,
             object MessageBoxIcon = null)
         {
-            if (MessageBoxButtons == null)
-                MessageBoxButtons = CustomMessageBox.MessageBoxButtons.OK;
-            if (MessageBoxIcon == null)
-                MessageBoxIcon = CustomMessageBox.MessageBoxIcon.None;
+            if (_NoDialogMode == false)
+            {
+                if (MessageBoxButtons == null)
+                    MessageBoxButtons = CustomMessageBox.MessageBoxButtons.OK;
+                if (MessageBoxIcon == null)
+                    MessageBoxIcon = CustomMessageBox.MessageBoxIcon.None;
 
-            return (int)Show(text, caption, (MessageBoxButtons)(int)MessageBoxButtons, (MessageBoxIcon)(int)MessageBoxIcon);
+                return (int)Show(text, caption, (MessageBoxButtons)(int)MessageBoxButtons, (MessageBoxIcon)(int)MessageBoxIcon);
+            }
+            else
+                return (int)(DialogResult.OK);
         }
 
         public static DialogResult Show(string text, string caption = "", MessageBoxButtons MessageBoxButtons = MessageBoxButtons.OK, MessageBoxIcon MessageBoxIcon = MessageBoxIcon.None, string YesText = "Yes", string NoText = "No")
@@ -38,7 +45,14 @@ namespace System
             Console.WriteLine("CustomMessageBox.Show");
 
             if (ShowEvent != null)
-                return ShowEvent.Invoke(text, caption, MessageBoxButtons, MessageBoxIcon, YesText, NoText);
+                if (_NoDialogMode == false)
+                {
+                    return ShowEvent.Invoke(text, caption, MessageBoxButtons, MessageBoxIcon, YesText, NoText);
+                }
+                else
+                {
+                    return DialogResult.OK;
+                }
 
             throw new Exception("ShowEvent Not Set");
         }
