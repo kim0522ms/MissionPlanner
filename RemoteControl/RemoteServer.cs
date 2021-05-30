@@ -170,15 +170,29 @@ namespace MissionPlanner.RemoteControl
 
                 switch (command.ToUpper())
                 {
+                    //case "CONNECT":
+                    //    //_targetForm.Invoke(new MethodInvoker(delegate () { _targetForm.doConnect(MainV2.comPort, "UDP", "115200", true, "172.30.48.1", "14550"); }));
+                    //    if (args.Count != 4)
+                    //        break;
+
+                    //    _targetForm.Invoke(new MethodInvoker(delegate () { _targetForm.doConnect(MainV2.comPort, args[0], args[1], true, args[2], args[3]); }));
+                    //    response = "Connected";
+                    //    break;
+
                     case "CONNECT":
-                        //_targetForm.Invoke(new MethodInvoker(delegate () { _targetForm.doConnect(MainV2.comPort, "UDP", "115200", true, "172.30.48.1", "14550"); }));
-                        if (args.Count != 4)
-                            break;
+                        List<string> hosts = new List<string>();
+                        List<string> ports = new List<string>();
 
-                        _targetForm.Invoke(new MethodInvoker(delegate () { _targetForm.doConnect(MainV2.comPort, args[0], args[1], true, args[2], args[3]); }));
-                        response = "Connected";
+                        foreach (string arg in args)
+                        {
+                            JObject jobj = (JObject)JsonConvert.DeserializeObject(arg);
+                            hosts.Add(jobj["host"].ToString());
+                            ports.Add(jobj["port"].ToString());
+                        }
+                        
+                        if (hosts.Count > 0)
+                            _targetForm.Invoke(new MethodInvoker(delegate () { _targetForm.NoDialog_Connect(hosts.ToArray(), ports.ToArray(), "UDP"); }));
                         break;
-
                     case "DISCONNECT":
                         if (args.Count != 0)
                             break;
@@ -209,6 +223,12 @@ namespace MissionPlanner.RemoteControl
                         _targetForm.Invoke(new MethodInvoker(delegate () { _targetForm.FlightData.NoDialog_SetMode(args[0]); }));
                         break;
 
+                    case "CHANGE_TAB":
+                        if (args.Count != 1)
+                            break;
+
+                        _targetForm.Invoke(new MethodInvoker(delegate () { MainV2.View.ShowScreen(MainV2.View.screens[Convert.ToInt32(args[0])].Name); }));
+                        break;
 
                     case "READ_MISSION":
                         _targetForm.Invoke(new MethodInvoker(delegate () {

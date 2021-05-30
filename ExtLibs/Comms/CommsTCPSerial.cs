@@ -95,6 +95,12 @@ namespace MissionPlanner.Comms
         public bool DtrEnable { get; set; }
         public string Host { get; set; } = "";
 
+
+        public void Open()
+        {
+            this.Open(null, null);
+        }
+
         public void Open(string host = null, string Port = null)
         {
             try
@@ -393,11 +399,6 @@ namespace MissionPlanner.Comms
             }
 
             // free native resources
-        }
-
-        public void Open()
-        {
-            throw new NotImplementedException();
         }
     }
 }

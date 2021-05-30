@@ -900,8 +900,7 @@ namespace MissionPlanner
                 //System.ArgumentException: Font 'Arial' does not support style 'Regular'.
 
                 log.Fatal(e);
-                CustomMessageBox.Show(e.ToString() +
-                                      "\n\n Font Issues? Please install this http://www.microsoft.com/en-us/download/details.aspx?id=16083");
+                CustomMessageBox.Show(e.ToString() + "\n\n Font Issues? Please install this http://www.microsoft.com/en-us/download/details.aspx?id=16083");
                 //splash.Close();
                 //this.Close();
                 Application.Exit();
@@ -1480,6 +1479,40 @@ namespace MissionPlanner
             }
 
             this.MenuConnect.Image = global::MissionPlanner.Properties.Resources.light_connect_icon;
+        }
+
+        public void NoDialog_Connect(string[] hosts, string[] ports, string portName = "UDP", string baud = "115200")
+        {
+            for (int a = hosts.Length - 1; a >= 0; a--)
+            {
+                var mav = new MAVLinkInterface();
+                mav.sysidcurrent = a;
+                mav.compidcurrent = a;
+
+
+                ICommsSerial client = null;
+
+                switch (portName)
+                {
+                    case "TCP":
+                    case "tcp":
+                        TcpSerial tcpSerial = new Comms.TcpSerial();
+                        tcpSerial.client = new TcpClient(hosts[a], Convert.ToInt32(ports[a]));
+                        client = tcpSerial;
+                        break;
+                    case "UDP":
+                    case "udp":
+                        UdpSerial udpSerial = new Comms.UdpSerial();
+                        udpSerial.client = new UdpClient(hosts[a], Convert.ToInt32(ports[a]));
+                        client = udpSerial;
+                        break;
+                }
+                mav.BaseStream = client;
+                Thread.Sleep(200);
+
+                MainV2.instance.doConnect(mav, portName, baud, false, hosts[a], ports[a]);
+                MainV2.Comports.Add(mav);
+            }
         }
 
         public void doConnect(MAVLinkInterface comPort, string portname, string baud, bool getparams = true, string host = null, string Port = null)

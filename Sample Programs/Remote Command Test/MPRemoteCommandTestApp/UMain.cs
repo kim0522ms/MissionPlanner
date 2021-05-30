@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using MPRemoteCommandTestApp.DTO;
+using Term1_TCPClient;
 
 namespace MPRemoteCommandTestApp
 {
@@ -178,10 +179,15 @@ namespace MPRemoteCommandTestApp
 
         private void btnPresetConnect_Click(object sender, EventArgs e)
         {
-            string[] args = {"UDP","115200","192.168.16.1","14550"};
-            _tcp.Send(MakeMPCommandJson("CONNECT",args) , false);
+            object[] args = new object[] { };
+
+            UDialogConnection dialog = new UDialogConnection();
+            
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _tcp.Send(MakeMPCommandJson("CONNECT", dialog.result.ToArray()), false);
+            }
         }
-        
 
         private void btnPresetDisconnect_Click(object sender, EventArgs e)
         {
