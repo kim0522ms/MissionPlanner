@@ -185,38 +185,38 @@ namespace MPRemoteCommandTestApp
             
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                _tcp.Send(MakeMPCommandJson("CONNECT", dialog.result.ToArray()), false);
+                _tcp.Send(MakeMPCommandJson("CONNECT", dialog.result.ToArray()));
             }
         }
 
         private void btnPresetDisconnect_Click(object sender, EventArgs e)
         {
             string[] args = { };
-            _tcp.Send(MakeMPCommandJson("DISCONNECT", args), false);
+            _tcp.Send(MakeMPCommandJson("DISCONNECT", args));
         }
 
         private void btnPresetArm_Click(object sender, EventArgs e)
         {
             string[] args = { };
-            _tcp.Send(MakeMPCommandJson("ARM", args), false);
+            _tcp.Send(MakeMPCommandJson("ARM", args));
         }
 
         private void btnPresetMissionStart_Click(object sender, EventArgs e)
         {
             string[] args = { };
-            _tcp.Send(MakeMPCommandJson("MISSION_START", args), false);
+            _tcp.Send(MakeMPCommandJson("MISSION_START", args));
         }
 
         private void btnPresetStabilize_Click(object sender, EventArgs e)
         {
             string[] args = { "Stabilize" };
-            _tcp.Send(MakeMPCommandJson("MODE", args), false);
+            _tcp.Send(MakeMPCommandJson("MODE", args));
         }
 
         private void btnPresetAuto_Click(object sender, EventArgs e)
         {
             string[] args = { "Auto" };
-            _tcp.Send(MakeMPCommandJson("MODE", args), false);
+            _tcp.Send(MakeMPCommandJson("MODE", args));
         }
 
         private void btnPresetUploadMap1_Click(object sender, EventArgs e)
@@ -229,7 +229,7 @@ namespace MPRemoteCommandTestApp
                 Waypoint.ToJObject("20", "0", "0", "0", "0", "0", "0", "0", "4", "3")
             };
 
-            _tcp.Send(MakeMPCommandJson("WRITE_MISSION", args), false);
+            _tcp.Send(MakeMPCommandJson("WRITE_MISSION", args));
         }
 
         private void btnPresetUploadMap2_Click(object sender, EventArgs e)
@@ -250,14 +250,64 @@ namespace MPRemoteCommandTestApp
 
             };
 
-            _tcp.Send(MakeMPCommandJson("WRITE_MISSION", args), false);
+            _tcp.Send(MakeMPCommandJson("WRITE_MISSION", args));
         }
+       
 
-        private void btnPresetDownloadMap_Click(object sender, EventArgs e)
-        {
-
-        }
-        
         #endregion
+
+        private void btnPresetInitSwarm_Click(object sender, EventArgs e)
+        {
+            string[] args = { };
+            _tcp.Send(MakeMPCommandJson("SWARM_INIT", args));
+        }
+
+        private void btnPresetSetLeader_Click(object sender, EventArgs e)
+        {
+            string[] args = { };
+            _tcp.Send(MakeMPCommandJson("SWARM_SET_LEADER", args));
+        }
+
+        private void btnPresetSetSwarmGuideMode_Click(object sender, EventArgs e)
+        {
+            string[] args = { };
+            _tcp.Send(MakeMPCommandJson("SWARM_GUIDE_MODE", args));
+        }
+
+        private void btnPresetSetSwarmArm_Click(object sender, EventArgs e)
+        {
+            string[] args = { };
+            _tcp.Send(MakeMPCommandJson("SWARM_ARM", args));
+        }
+
+        private void btnSwarmTakeOff_Click(object sender, EventArgs e)
+        {
+            string[] args = { };
+            _tcp.Send(MakeMPCommandJson("SWARM_TAKEOFF", args));
+        }
+
+        private void btnSwarmLand_Click(object sender, EventArgs e)
+        {
+            string[] args = { };
+            _tcp.Send(MakeMPCommandJson("SWARM_LAND", args));
+        }
+
+        private void btnSwarmStart_Click(object sender, EventArgs e)
+        {
+            string[] args = { };
+            _tcp.Send(MakeMPCommandJson("SWARM_START", args));
+        }
+
+        private void btnSwarmSetPosition01_Click(object sender, EventArgs e)
+        {
+            string[] args = {"30"};
+            _tcp.Send(MakeMPCommandJson("SWARM_SET_POSITION_TEST", args));
+        }
+
+        private void btnSwarmSetPosition02_Click(object sender, EventArgs e)
+        {
+            string[] args = { "15" };
+            _tcp.Send(MakeMPCommandJson("SWARM_SET_POSITION_TEST", args));
+        }
     }
 }

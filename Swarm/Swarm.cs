@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace MissionPlanner.Swarm
 {
-    abstract class Swarm
+    public abstract class Swarm
     {
         internal static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         internal MAVState Leader = null;
@@ -46,7 +46,7 @@ namespace MissionPlanner.Swarm
             }
         }
 
-        public void Takeoff()
+        public void Takeoff(int altitude = 5)
         {
             foreach (var port in MainV2.Comports)
             {
@@ -57,7 +57,7 @@ namespace MissionPlanner.Swarm
 
                     port.setMode(mav.sysid, mav.compid, "GUIDED");
 
-                    port.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, 5);
+                    port.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.TAKEOFF, 0, 0, 0, 0, 0, 0, altitude);
                 }
             }
         }

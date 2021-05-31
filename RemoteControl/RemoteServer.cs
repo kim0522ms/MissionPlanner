@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MissionPlanner.Swarm;
 using MissionPlanner.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -31,6 +32,8 @@ namespace MissionPlanner.RemoteControl
         }
         private ManualResetEvent allDone = new ManualResetEvent(false);
         private MainV2 _targetForm;
+
+        private FormationControl formationControl;
 
 
         public RemoteServer(MainV2 targetForm)
@@ -222,6 +225,76 @@ namespace MissionPlanner.RemoteControl
 
                         _targetForm.Invoke(new MethodInvoker(delegate () { MainV2.View.ShowScreen(MainV2.View.screens[Convert.ToInt32(args[0])].Name); }));
                         break;
+
+                    #region [ Swarm Commands ]
+                    case "SWARM_INIT":
+                        if (args.Count != 0)
+                            break;
+
+                        if (formationControl == null)
+                        {
+                            formationControl = new FormationControl();
+                            formationControl._NoDialogMode = true;
+                        }
+                            
+                        break;
+
+                    case "SWARM_SET_LEADER":
+                        //if (args.Count != 1 || formationControl == null)
+                        //    break;
+
+                        formationControl.NoDialog_SetLeader(MainV2.comPort.MAV);
+                        break;
+                    case "SWARM_GUIDE_MODE":
+                        if (formationControl.SwarmInterface != null)
+                            formationControl.SwarmInterface.GuidedMode();
+                        break;
+
+                    case "SWARM_ARM":
+                        if (formationControl.SwarmInterface != null)
+                            formationControl.SwarmInterface.Arm();
+                        break;
+
+                    case "SWARM_TAKEOFF":
+                        if (formationControl.SwarmInterface != null)
+                            formationControl.SwarmInterface.Takeoff(15);
+                        break;
+                    case "SWARM_LAND":
+                        if (formationControl.SwarmInterface != null)
+                            formationControl.SwarmInterface.Land();
+                        break;
+
+                    case "SWARM_START":
+                    case "SWARM_STOP":
+                        if (formationControl.SwarmInterface != null)
+                            formationControl.ChangeSwarmThreadState();
+                        break;
+
+                    case "SWARM_SET_POSITION_TEST":
+                        if (formationControl.SwarmInterface != null)
+                        {
+                            int _x = Convert.ToInt32(args[0]);
+                            int _y = Convert.ToInt32(args[0]);
+                            foreach (var port in MainV2.Comports)
+                            {
+                                foreach (var mav in port.MAVlist)
+                                {
+                                    if (mav == ((Formation)formationControl.SwarmInterface).getLeader())
+                                        continue;
+
+                                    Vector3 vector = formationControl.SwarmInterface.getOffsets(mav);
+                                    vector.x = _x;
+                                    vector.y = _y;
+                                    vector.z = 10;
+                                    _x += Convert.ToInt32(args[0]);
+                                    _y += Convert.ToInt32(args[0]);
+                                    formationControl.SetPosition(mav, vector);
+                                }
+                            }
+                        }
+                        break;
+
+                    #endregion
 
                     case "READ_MISSION":
                         _targetForm.Invoke(new MethodInvoker(delegate () {

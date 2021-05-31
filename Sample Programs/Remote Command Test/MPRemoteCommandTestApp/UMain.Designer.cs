@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbTriggerMessage = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.lbHostAddress = new System.Windows.Forms.Label();
@@ -55,7 +55,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ttConnectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.gbPreset = new System.Windows.Forms.GroupBox();
-            this.btnPresetDownloadMap = new System.Windows.Forms.Button();
             this.btnPresetUploadMap2 = new System.Windows.Forms.Button();
             this.btnPresetUploadMap1 = new System.Windows.Forms.Button();
             this.btnPresetMissionStart = new System.Windows.Forms.Button();
@@ -64,6 +63,16 @@
             this.btnPresetArm = new System.Windows.Forms.Button();
             this.btnPresetDisconnect = new System.Windows.Forms.Button();
             this.btnPresetConnect = new System.Windows.Forms.Button();
+            this.btnSwarmInit = new System.Windows.Forms.Button();
+            this.btnSwarmSetLeader = new System.Windows.Forms.Button();
+            this.btnSwarmSetGuideMode = new System.Windows.Forms.Button();
+            this.btnSwarmSetArm = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSwarmLand = new System.Windows.Forms.Button();
+            this.btnSwarmTakeOff = new System.Windows.Forms.Button();
+            this.btnSwarmStart = new System.Windows.Forms.Button();
+            this.btnSwarmSetPosition01 = new System.Windows.Forms.Button();
+            this.btnSwarmSetPosition02 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgTriggeredData)).BeginInit();
             this.gbLogMessage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgLogMessage)).BeginInit();
@@ -72,6 +81,7 @@
             this.gbConnectionInfo.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.gbPreset.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbTriggerMessage
@@ -160,14 +170,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgTriggeredData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgTriggeredData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgTriggeredData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgTriggeredData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgTriggeredData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.triggerTimeStamp,
@@ -176,7 +186,7 @@
             this.dgTriggeredData.Name = "dgTriggeredData";
             this.dgTriggeredData.RowHeadersVisible = false;
             this.dgTriggeredData.RowTemplate.Height = 23;
-            this.dgTriggeredData.Size = new System.Drawing.Size(672, 123);
+            this.dgTriggeredData.Size = new System.Drawing.Size(672, 140);
             this.dgTriggeredData.TabIndex = 8;
             // 
             // triggerTimeStamp
@@ -194,7 +204,7 @@
             this.gbLogMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbLogMessage.Controls.Add(this.dgLogMessage);
-            this.gbLogMessage.Location = new System.Drawing.Point(12, 332);
+            this.gbLogMessage.Location = new System.Drawing.Point(12, 436);
             this.gbLogMessage.Name = "gbLogMessage";
             this.gbLogMessage.Size = new System.Drawing.Size(687, 143);
             this.gbLogMessage.TabIndex = 9;
@@ -209,14 +219,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgLogMessage.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgLogMessage.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgLogMessage.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgLogMessage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgLogMessage.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.logTimeStamp,
@@ -252,7 +262,7 @@
             this.gbTriggerBox.Controls.Add(this.cbxRawText);
             this.gbTriggerBox.Controls.Add(this.btnSend);
             this.gbTriggerBox.Controls.Add(this.tbTriggerMessage);
-            this.gbTriggerBox.Location = new System.Drawing.Point(12, 481);
+            this.gbTriggerBox.Location = new System.Drawing.Point(12, 585);
             this.gbTriggerBox.Name = "gbTriggerBox";
             this.gbTriggerBox.Size = new System.Drawing.Size(687, 70);
             this.gbTriggerBox.TabIndex = 10;
@@ -279,9 +289,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbDataView.Controls.Add(this.dgTriggeredData);
-            this.gbDataView.Location = new System.Drawing.Point(12, 177);
+            this.gbDataView.Location = new System.Drawing.Point(12, 264);
             this.gbDataView.Name = "gbDataView";
-            this.gbDataView.Size = new System.Drawing.Size(687, 149);
+            this.gbDataView.Size = new System.Drawing.Size(687, 166);
             this.gbDataView.TabIndex = 11;
             this.gbDataView.TabStop = false;
             this.gbDataView.Text = "Recieved Data";
@@ -337,7 +347,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ttConnectionStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 555);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 659);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(711, 22);
             this.statusStrip1.TabIndex = 13;
@@ -353,7 +363,6 @@
             // 
             this.gbPreset.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbPreset.Controls.Add(this.btnPresetDownloadMap);
             this.gbPreset.Controls.Add(this.btnPresetUploadMap2);
             this.gbPreset.Controls.Add(this.btnPresetUploadMap1);
             this.gbPreset.Controls.Add(this.btnPresetMissionStart);
@@ -367,19 +376,7 @@
             this.gbPreset.Size = new System.Drawing.Size(687, 84);
             this.gbPreset.TabIndex = 12;
             this.gbPreset.TabStop = false;
-            this.gbPreset.Text = "Preset";
-            // 
-            // btnPresetDownloadMap
-            // 
-            this.btnPresetDownloadMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPresetDownloadMap.Font = new System.Drawing.Font("굴림", 7F);
-            this.btnPresetDownloadMap.Location = new System.Drawing.Point(483, 20);
-            this.btnPresetDownloadMap.Name = "btnPresetDownloadMap";
-            this.btnPresetDownloadMap.Size = new System.Drawing.Size(93, 23);
-            this.btnPresetDownloadMap.TabIndex = 8;
-            this.btnPresetDownloadMap.Text = "Download Map";
-            this.btnPresetDownloadMap.UseVisualStyleBackColor = true;
-            this.btnPresetDownloadMap.Click += new System.EventHandler(this.btnPresetDownloadMap_Click);
+            this.gbPreset.Text = "Single Commands";
             // 
             // btnPresetUploadMap2
             // 
@@ -463,11 +460,122 @@
             this.btnPresetConnect.UseVisualStyleBackColor = true;
             this.btnPresetConnect.Click += new System.EventHandler(this.btnPresetConnect_Click);
             // 
+            // btnSwarmInit
+            // 
+            this.btnSwarmInit.Location = new System.Drawing.Point(9, 20);
+            this.btnSwarmInit.Name = "btnSwarmInit";
+            this.btnSwarmInit.Size = new System.Drawing.Size(93, 23);
+            this.btnSwarmInit.TabIndex = 9;
+            this.btnSwarmInit.Text = "Initialize";
+            this.btnSwarmInit.UseVisualStyleBackColor = true;
+            this.btnSwarmInit.Click += new System.EventHandler(this.btnPresetInitSwarm_Click);
+            // 
+            // btnSwarmSetLeader
+            // 
+            this.btnSwarmSetLeader.Location = new System.Drawing.Point(9, 49);
+            this.btnSwarmSetLeader.Name = "btnSwarmSetLeader";
+            this.btnSwarmSetLeader.Size = new System.Drawing.Size(93, 23);
+            this.btnSwarmSetLeader.TabIndex = 10;
+            this.btnSwarmSetLeader.Text = "Set Leader";
+            this.btnSwarmSetLeader.UseVisualStyleBackColor = true;
+            this.btnSwarmSetLeader.Click += new System.EventHandler(this.btnPresetSetLeader_Click);
+            // 
+            // btnSwarmSetGuideMode
+            // 
+            this.btnSwarmSetGuideMode.Location = new System.Drawing.Point(108, 20);
+            this.btnSwarmSetGuideMode.Name = "btnSwarmSetGuideMode";
+            this.btnSwarmSetGuideMode.Size = new System.Drawing.Size(112, 23);
+            this.btnSwarmSetGuideMode.TabIndex = 11;
+            this.btnSwarmSetGuideMode.Text = "Set Slave Guide";
+            this.btnSwarmSetGuideMode.UseVisualStyleBackColor = true;
+            this.btnSwarmSetGuideMode.Click += new System.EventHandler(this.btnPresetSetSwarmGuideMode_Click);
+            // 
+            // btnSwarmSetArm
+            // 
+            this.btnSwarmSetArm.Location = new System.Drawing.Point(108, 49);
+            this.btnSwarmSetArm.Name = "btnSwarmSetArm";
+            this.btnSwarmSetArm.Size = new System.Drawing.Size(112, 23);
+            this.btnSwarmSetArm.TabIndex = 12;
+            this.btnSwarmSetArm.Text = "Set Slave Arm";
+            this.btnSwarmSetArm.UseVisualStyleBackColor = true;
+            this.btnSwarmSetArm.Click += new System.EventHandler(this.btnPresetSetSwarmArm_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.btnSwarmSetPosition02);
+            this.groupBox1.Controls.Add(this.btnSwarmSetPosition01);
+            this.groupBox1.Controls.Add(this.btnSwarmStart);
+            this.groupBox1.Controls.Add(this.btnSwarmLand);
+            this.groupBox1.Controls.Add(this.btnSwarmTakeOff);
+            this.groupBox1.Controls.Add(this.btnSwarmSetArm);
+            this.groupBox1.Controls.Add(this.btnSwarmSetGuideMode);
+            this.groupBox1.Controls.Add(this.btnSwarmSetLeader);
+            this.groupBox1.Controls.Add(this.btnSwarmInit);
+            this.groupBox1.Location = new System.Drawing.Point(12, 174);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(687, 84);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Swarm Commands";
+            // 
+            // btnSwarmLand
+            // 
+            this.btnSwarmLand.Location = new System.Drawing.Point(226, 49);
+            this.btnSwarmLand.Name = "btnSwarmLand";
+            this.btnSwarmLand.Size = new System.Drawing.Size(112, 23);
+            this.btnSwarmLand.TabIndex = 14;
+            this.btnSwarmLand.Text = "Land";
+            this.btnSwarmLand.UseVisualStyleBackColor = true;
+            this.btnSwarmLand.Click += new System.EventHandler(this.btnSwarmLand_Click);
+            // 
+            // btnSwarmTakeOff
+            // 
+            this.btnSwarmTakeOff.Location = new System.Drawing.Point(226, 20);
+            this.btnSwarmTakeOff.Name = "btnSwarmTakeOff";
+            this.btnSwarmTakeOff.Size = new System.Drawing.Size(112, 23);
+            this.btnSwarmTakeOff.TabIndex = 13;
+            this.btnSwarmTakeOff.Text = "Takeoff";
+            this.btnSwarmTakeOff.UseVisualStyleBackColor = true;
+            this.btnSwarmTakeOff.Click += new System.EventHandler(this.btnSwarmTakeOff_Click);
+            // 
+            // btnSwarmStart
+            // 
+            this.btnSwarmStart.Location = new System.Drawing.Point(344, 20);
+            this.btnSwarmStart.Name = "btnSwarmStart";
+            this.btnSwarmStart.Size = new System.Drawing.Size(112, 23);
+            this.btnSwarmStart.TabIndex = 15;
+            this.btnSwarmStart.Text = "Start";
+            this.btnSwarmStart.UseVisualStyleBackColor = true;
+            this.btnSwarmStart.Click += new System.EventHandler(this.btnSwarmStart_Click);
+            // 
+            // btnSwarmSetPosition01
+            // 
+            this.btnSwarmSetPosition01.Location = new System.Drawing.Point(563, 20);
+            this.btnSwarmSetPosition01.Name = "btnSwarmSetPosition01";
+            this.btnSwarmSetPosition01.Size = new System.Drawing.Size(112, 23);
+            this.btnSwarmSetPosition01.TabIndex = 16;
+            this.btnSwarmSetPosition01.Text = "Set Position 01";
+            this.btnSwarmSetPosition01.UseVisualStyleBackColor = true;
+            this.btnSwarmSetPosition01.Click += new System.EventHandler(this.btnSwarmSetPosition01_Click);
+            // 
+            // btnSwarmSetPosition02
+            // 
+            this.btnSwarmSetPosition02.Location = new System.Drawing.Point(563, 49);
+            this.btnSwarmSetPosition02.Name = "btnSwarmSetPosition02";
+            this.btnSwarmSetPosition02.Size = new System.Drawing.Size(112, 23);
+            this.btnSwarmSetPosition02.TabIndex = 17;
+            this.btnSwarmSetPosition02.Text = "Set Position 02";
+            this.btnSwarmSetPosition02.UseVisualStyleBackColor = true;
+            this.btnSwarmSetPosition02.Click += new System.EventHandler(this.btnSwarmSetPosition02_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(711, 577);
+            this.ClientSize = new System.Drawing.Size(711, 681);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gbPreset);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.gbLogMessage);
@@ -491,6 +599,7 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.gbPreset.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -522,7 +631,6 @@
         private System.Windows.Forms.ToolStripStatusLabel ttConnectionStatus;
         private System.Windows.Forms.CheckBox cbxRawText;
         private System.Windows.Forms.GroupBox gbPreset;
-        private System.Windows.Forms.Button btnPresetDownloadMap;
         private System.Windows.Forms.Button btnPresetUploadMap2;
         private System.Windows.Forms.Button btnPresetUploadMap1;
         private System.Windows.Forms.Button btnPresetMissionStart;
@@ -531,6 +639,16 @@
         private System.Windows.Forms.Button btnPresetArm;
         private System.Windows.Forms.Button btnPresetDisconnect;
         private System.Windows.Forms.Button btnPresetConnect;
+        private System.Windows.Forms.Button btnSwarmInit;
+        private System.Windows.Forms.Button btnSwarmSetLeader;
+        private System.Windows.Forms.Button btnSwarmSetGuideMode;
+        private System.Windows.Forms.Button btnSwarmSetArm;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btnSwarmLand;
+        private System.Windows.Forms.Button btnSwarmTakeOff;
+        private System.Windows.Forms.Button btnSwarmStart;
+        private System.Windows.Forms.Button btnSwarmSetPosition01;
+        private System.Windows.Forms.Button btnSwarmSetPosition02;
     }
 }
 

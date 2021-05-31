@@ -12,7 +12,8 @@ namespace MissionPlanner.Swarm
 {
     public partial class FormationControl : Form
     {
-        Formation SwarmInterface = null;
+        public Formation SwarmInterface = null;
+        public bool _NoDialogMode = false;
         bool threadrun = false;
 
         public FormationControl()
@@ -46,7 +47,8 @@ namespace MissionPlanner.Swarm
 
             this.MouseWheel += new MouseEventHandler(FollowLeaderControl_MouseWheel);
 
-            MessageBox.Show("this is beta, use at own risk");
+            if (CustomMessageBox._NoDialogMode != true)
+                MessageBox.Show("this is beta, use at own risk");
 
             MissionPlanner.Utilities.Tracking.AddPage(this.GetType().ToString(), this.Text);
         }
@@ -105,17 +107,24 @@ namespace MissionPlanner.Swarm
 
         private void BUT_Start_Click(object sender, EventArgs e)
         {
+            ChangeSwarmThreadState();
+        }
+
+        public void ChangeSwarmThreadState()
+        {
             if (threadrun == true)
             {
                 threadrun = false;
-                BUT_Start.Text = Strings.Start;
+                if (false == _NoDialogMode)
+                    BUT_Start.Text = Strings.Start;
                 return;
             }
 
             if (SwarmInterface != null)
             {
                 new System.Threading.Thread(mainloop) { IsBackground = true }.Start();
-                BUT_Start.Text = Strings.Stop;
+                if (false == _NoDialogMode)
+                    BUT_Start.Text = Strings.Stop;
             }
         }
 
@@ -198,6 +207,55 @@ namespace MissionPlanner.Swarm
             }
         }
 
+        private void ChangeCurrentComport(MAVState currentMavState)
+        {
+            foreach (var port in MainV2.Comports)
+            {
+                foreach (var mav in port.MAVlist)
+                {
+                    if (mav == currentMavState)
+                    {
+                        MainV2.comPort = port;
+                        port.sysidcurrent = mav.sysid;
+                        port.compidcurrent = mav.compid;
+                    }
+                }
+            }
+        }
+
+        public void NoDialog_SetLeader(MAVState currentMavState)
+        {
+            ChangeCurrentComport(currentMavState);
+
+            if (SwarmInterface != null)
+            {
+                var vectorlead = SwarmInterface.getOffsets(MainV2.comPort.MAV);
+
+                foreach (var port in MainV2.Comports)
+                {
+                    foreach (var mav in port.MAVlist)
+                    {
+                        var vector = SwarmInterface.getOffsets(mav);
+
+                        SwarmInterface.setOffsets(mav, (float)(vector.x - vectorlead.x),
+                            (float)(vector.y - vectorlead.y),
+                            (float)(vector.z - vectorlead.z));
+                    }
+                }
+                SwarmInterface.setLeader(MainV2.comPort.MAV);
+            }
+        }
+
+        public void NoDialog_SetGuideMode()
+        {
+            this.but_guided_Click(null, null);
+        }
+
+        public void NoDialog_SetArm()
+        {
+            this.BUT_Arm_Click(null, null);
+        }
+
         private void BUT_connect_Click(object sender, EventArgs e)
         {
             Comms.CommsSerialScan.Scan(true);
@@ -268,6 +326,16 @@ namespace MissionPlanner.Swarm
         private void Control_FormClosing(object sender, FormClosingEventArgs e)
         {
             threadrun = false;
+        }
+
+        public void SetPosition(MAVState mav, Vector3 vector)
+        {
+            if (SwarmInterface != null)
+            {
+                var vectorlead = SwarmInterface.getOffsets(((Formation)SwarmInterface).getLeader());
+
+                SwarmInterface.setOffsets(mav, (float)(vector.x - vectorlead.x), (float)(vector.y - vectorlead.y), (float)(vector.z - vectorlead.z));
+            }
         }
 
         private void BUT_Updatepos_Click(object sender, EventArgs e)
