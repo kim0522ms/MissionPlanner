@@ -61,10 +61,10 @@ namespace MissionPlanner.Comms
             get
             {
                 if (client != null && client.Client != null && client.Client.RemoteEndPoint != null)
-                    return "TCP" + ((IPEndPoint) client.Client.RemoteEndPoint).Port;
+                    return "TCP" + ((IPEndPoint)client.Client.RemoteEndPoint).Port;
                 return "TCP" + Port;
             }
-            set{}
+            set { }
         }
 
         public int BytesToRead => client.Available;
@@ -95,13 +95,7 @@ namespace MissionPlanner.Comms
         public bool DtrEnable { get; set; }
         public string Host { get; set; } = "";
 
-
         public void Open()
-        {
-            this.Open(null, null);
-        }
-
-        public void Open(string host = null, string Port = null)
         {
             try
             {
@@ -113,34 +107,31 @@ namespace MissionPlanner.Comms
                     return;
                 }
 
-                if (host == null)
+                var dest = Port;
+                var host = "127.0.0.1";
+
+                if (Host == "")
                 {
-                    var dest = Port;
-                    host = "127.0.0.1";
+                    dest = OnSettings("TCP_port", dest);
 
-                    if (Host == "")
+                    host = OnSettings("TCP_host", host);
+
+                    if (!reconnectnoprompt)
                     {
-                        dest = OnSettings("TCP_port", dest);
-
-                        host = OnSettings("TCP_host", host);
-
-                        if (!reconnectnoprompt)
-                        {
-                            if (inputboxreturn.Cancel == OnInputBoxShow("remote host",
-                                "Enter host name/ip (ensure remote end is already started)", ref host))
-                                throw new Exception("Canceled by request");
-                            if (inputboxreturn.Cancel == OnInputBoxShow("remote Port", "Enter remote port", ref dest))
-                                throw new Exception("Canceled by request");
-                        }
-
-                    }
-                    else
-                    {
-                        host = Host;
+                        if (inputboxreturn.Cancel == OnInputBoxShow("remote host",
+                            "Enter host name/ip (ensure remote end is already started)", ref host))
+                            throw new Exception("Canceled by request");
+                        if (inputboxreturn.Cancel == OnInputBoxShow("remote Port", "Enter remote port", ref dest))
+                            throw new Exception("Canceled by request");
                     }
 
-                    Port = dest;
                 }
+                else
+                {
+                    host = Host;
+                }
+
+                Port = dest;
 
                 log.InfoFormat("TCP Open {0} {1}", host, Port);
 
@@ -275,7 +266,7 @@ namespace MissionPlanner.Comms
                 if (!IsOpen) break;
                 if (BytesToRead > 0)
                 {
-                    var letter = (byte) ReadByte();
+                    var letter = (byte)ReadByte();
 
                     temp[count] = letter;
 

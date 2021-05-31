@@ -531,15 +531,12 @@ namespace MissionPlanner
             Open(false);
         }
 
-        public void Open(bool getparams, bool skipconnectedcheck = false, string host= null, string Port = null)
+        public void Open(bool getparams, bool skipconnectedcheck = false)
         {
             if (BaseStream == null || BaseStream.IsOpen && !skipconnectedcheck)
                 return;
 
             MAVlist.Clear();
-
-            this._NoDialog_Host = host;
-            this._NoDialog_Port = Port;
 
             frmProgressReporter = CreateIProgressReporterDialogue(Strings.ConnectingMavlink);
 
@@ -605,11 +602,8 @@ namespace MissionPlanner
                                 .CancelAcknowledged = true;
                         };
                     }
-
-                    if (_NoDialog_Host == null)
-                        BaseStream.Open();
-                    else
-                        BaseStream.Open(_NoDialog_Host, _NoDialog_Port);
+    
+                    BaseStream.Open();
 
                     BaseStream.DiscardInBuffer();
 

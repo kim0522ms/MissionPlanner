@@ -57,6 +57,7 @@ namespace Term1_TCPClient
             this.dgAddressList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.rHost,
             this.rPort});
+            this.dgAddressList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgAddressList.Location = new System.Drawing.Point(12, 12);
             this.dgAddressList.Name = "dgAddressList";
             this.dgAddressList.RowHeadersVisible = false;
@@ -99,6 +100,7 @@ namespace Term1_TCPClient
             this.tbxAddress.Name = "tbxAddress";
             this.tbxAddress.Size = new System.Drawing.Size(218, 21);
             this.tbxAddress.TabIndex = 13;
+            this.tbxAddress.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbxAddress_KeyUp);
             // 
             // btnAddList
             // 

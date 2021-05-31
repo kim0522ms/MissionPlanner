@@ -63,5 +63,12 @@ namespace Term1_TCPClient
             this.Close();
         }
 
+        private void tbxAddress_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.btnAddList.PerformClick();
+            }
+        }
     }
 }

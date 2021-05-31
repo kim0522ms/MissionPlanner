@@ -1486,36 +1486,29 @@ namespace MissionPlanner
             for (int a = hosts.Length - 1; a >= 0; a--)
             {
                 var mav = new MAVLinkInterface();
-                mav.sysidcurrent = a;
-                mav.compidcurrent = a;
 
-
-                ICommsSerial client = null;
-
-                switch (portName)
+                switch (portName.ToLower())
                 {
-                    case "TCP":
                     case "tcp":
                         TcpSerial tcpSerial = new Comms.TcpSerial();
                         tcpSerial.client = new TcpClient(hosts[a], Convert.ToInt32(ports[a]));
-                        client = tcpSerial;
+                        mav.BaseStream = tcpSerial;
                         break;
-                    case "UDP":
                     case "udp":
-                        UdpSerial udpSerial = new Comms.UdpSerial();
+                        UdpSerial udpSerial = new Comms.UdpSerial(ports[a]);
                         udpSerial.client = new UdpClient(hosts[a], Convert.ToInt32(ports[a]));
-                        client = udpSerial;
+                        mav.BaseStream = udpSerial;
                         break;
                 }
-                mav.BaseStream = client;
+
                 Thread.Sleep(200);
 
-                MainV2.instance.doConnect(mav, portName, baud, false, hosts[a], ports[a]);
+                MainV2.instance.doConnect(mav, "preset", baud, false);
                 MainV2.Comports.Add(mav);
             }
         }
 
-        public void doConnect(MAVLinkInterface comPort, string portname, string baud, bool getparams = true, string host = null, string Port = null)
+        public void doConnect(MAVLinkInterface comPort, string portname, string baud, bool getparams = true)
         {
             bool skipconnectcheck = false;
             log.Info("We are connecting to " + portname + " " + baud);
@@ -1676,7 +1669,7 @@ namespace MissionPlanner
                 connecttime = DateTime.Now;
 
                 // do the connect
-                comPort.Open(false, skipconnectcheck, host, Port);
+                comPort.Open(false, skipconnectcheck);
 
                 if (!comPort.BaseStream.IsOpen)
                 {

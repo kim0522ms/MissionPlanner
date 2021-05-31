@@ -39,8 +39,13 @@ namespace MissionPlanner.Comms
             //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
             //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
 
-            Port = "14550";
+            Port = "";
             ReadTimeout = 500;
+        }
+
+        public UdpSerial(string port) : this()
+        {
+            Port = port;
         }
 
         public UdpSerial(UdpClient client)
@@ -95,33 +100,26 @@ namespace MissionPlanner.Comms
 
         public bool DtrEnable { get; set; }
 
-
         public void Open()
         {
-            this.Open(null, null);
-        }
-
-        public void Open(string host, string Port)
-        {
-            if (client.Client.Connected || IsOpen)
-            {
-                log.Info("UDPSerial socket already open");
-                return;
-            }
+            //if (client.Client.Connected || IsOpen)
+            //{
+            //    log.Info("UDPSerial socket already open");
+            //    return;
+            //}
 
             client.Close();
 
-            var dest = Port;
-
-            dest = OnSettings("UDP_port" + ConfigRef, dest);
-
-            if (host == null && Port == null)
+            if (Port.Equals(""))
             {
+                var dest = Port;
+                dest = OnSettings("UDP_port" + ConfigRef, dest);
+
                 if (inputboxreturn.Cancel == OnInputBoxShow("Listern Port",
                     "Enter Local port (ensure remote end is already sending)", ref dest)) return;
                 Port = dest;
             }
-            
+
             OnSettings("UDP_port" + ConfigRef, Port, true);
 
             //######################################
@@ -303,7 +301,7 @@ namespace MissionPlanner.Comms
                 if (!IsOpen) break;
                 if (BytesToRead > 0)
                 {
-                    var letter = (byte) ReadByte();
+                    var letter = (byte)ReadByte();
 
                     temp[count] = letter;
 

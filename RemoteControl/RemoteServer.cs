@@ -170,16 +170,10 @@ namespace MissionPlanner.RemoteControl
 
                 switch (command.ToUpper())
                 {
-                    //case "CONNECT":
-                    //    //_targetForm.Invoke(new MethodInvoker(delegate () { _targetForm.doConnect(MainV2.comPort, "UDP", "115200", true, "172.30.48.1", "14550"); }));
-                    //    if (args.Count != 4)
-                    //        break;
-
-                    //    _targetForm.Invoke(new MethodInvoker(delegate () { _targetForm.doConnect(MainV2.comPort, args[0], args[1], true, args[2], args[3]); }));
-                    //    response = "Connected";
-                    //    break;
-
                     case "CONNECT":
+                        if (args.Count == 0)
+                            break;
+
                         List<string> hosts = new List<string>();
                         List<string> ports = new List<string>();
 
@@ -200,7 +194,6 @@ namespace MissionPlanner.RemoteControl
                         _targetForm.Invoke(new MethodInvoker(delegate () { _targetForm.doDisconnect(MainV2.comPort); }));
                         response = "Disconnected";
                         break;
-
 
                     case "ARM":
                         if (args.Count != 0)
