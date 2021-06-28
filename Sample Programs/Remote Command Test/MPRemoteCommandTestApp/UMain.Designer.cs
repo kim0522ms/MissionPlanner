@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tbTriggerMessage = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.lbHostAddress = new System.Windows.Forms.Label();
@@ -68,11 +68,11 @@
             this.btnSwarmSetGuideMode = new System.Windows.Forms.Button();
             this.btnSwarmSetArm = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSwarmSetPosition02 = new System.Windows.Forms.Button();
+            this.btnSwarmSetPosition01 = new System.Windows.Forms.Button();
+            this.btnSwarmStart = new System.Windows.Forms.Button();
             this.btnSwarmLand = new System.Windows.Forms.Button();
             this.btnSwarmTakeOff = new System.Windows.Forms.Button();
-            this.btnSwarmStart = new System.Windows.Forms.Button();
-            this.btnSwarmSetPosition01 = new System.Windows.Forms.Button();
-            this.btnSwarmSetPosition02 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgTriggeredData)).BeginInit();
             this.gbLogMessage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgLogMessage)).BeginInit();
@@ -170,14 +170,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgTriggeredData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgTriggeredData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgTriggeredData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgTriggeredData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgTriggeredData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.triggerTimeStamp,
@@ -219,14 +219,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgLogMessage.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgLogMessage.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgLogMessage.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgLogMessage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgLogMessage.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.logTimeStamp,
@@ -520,6 +520,36 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Swarm Commands";
             // 
+            // btnSwarmSetPosition02
+            // 
+            this.btnSwarmSetPosition02.Location = new System.Drawing.Point(563, 49);
+            this.btnSwarmSetPosition02.Name = "btnSwarmSetPosition02";
+            this.btnSwarmSetPosition02.Size = new System.Drawing.Size(112, 23);
+            this.btnSwarmSetPosition02.TabIndex = 17;
+            this.btnSwarmSetPosition02.Text = "Set Formation 02";
+            this.btnSwarmSetPosition02.UseVisualStyleBackColor = true;
+            this.btnSwarmSetPosition02.Click += new System.EventHandler(this.btnSwarmSetPosition02_Click);
+            // 
+            // btnSwarmSetPosition01
+            // 
+            this.btnSwarmSetPosition01.Location = new System.Drawing.Point(563, 20);
+            this.btnSwarmSetPosition01.Name = "btnSwarmSetPosition01";
+            this.btnSwarmSetPosition01.Size = new System.Drawing.Size(112, 23);
+            this.btnSwarmSetPosition01.TabIndex = 16;
+            this.btnSwarmSetPosition01.Text = "Set Formation 01";
+            this.btnSwarmSetPosition01.UseVisualStyleBackColor = true;
+            this.btnSwarmSetPosition01.Click += new System.EventHandler(this.btnSwarmSetPosition01_Click);
+            // 
+            // btnSwarmStart
+            // 
+            this.btnSwarmStart.Location = new System.Drawing.Point(344, 20);
+            this.btnSwarmStart.Name = "btnSwarmStart";
+            this.btnSwarmStart.Size = new System.Drawing.Size(112, 23);
+            this.btnSwarmStart.TabIndex = 15;
+            this.btnSwarmStart.Text = "Start";
+            this.btnSwarmStart.UseVisualStyleBackColor = true;
+            this.btnSwarmStart.Click += new System.EventHandler(this.btnSwarmStart_Click);
+            // 
             // btnSwarmLand
             // 
             this.btnSwarmLand.Location = new System.Drawing.Point(226, 49);
@@ -539,36 +569,6 @@
             this.btnSwarmTakeOff.Text = "Takeoff";
             this.btnSwarmTakeOff.UseVisualStyleBackColor = true;
             this.btnSwarmTakeOff.Click += new System.EventHandler(this.btnSwarmTakeOff_Click);
-            // 
-            // btnSwarmStart
-            // 
-            this.btnSwarmStart.Location = new System.Drawing.Point(344, 20);
-            this.btnSwarmStart.Name = "btnSwarmStart";
-            this.btnSwarmStart.Size = new System.Drawing.Size(112, 23);
-            this.btnSwarmStart.TabIndex = 15;
-            this.btnSwarmStart.Text = "Start";
-            this.btnSwarmStart.UseVisualStyleBackColor = true;
-            this.btnSwarmStart.Click += new System.EventHandler(this.btnSwarmStart_Click);
-            // 
-            // btnSwarmSetPosition01
-            // 
-            this.btnSwarmSetPosition01.Location = new System.Drawing.Point(563, 20);
-            this.btnSwarmSetPosition01.Name = "btnSwarmSetPosition01";
-            this.btnSwarmSetPosition01.Size = new System.Drawing.Size(112, 23);
-            this.btnSwarmSetPosition01.TabIndex = 16;
-            this.btnSwarmSetPosition01.Text = "Set Position 01";
-            this.btnSwarmSetPosition01.UseVisualStyleBackColor = true;
-            this.btnSwarmSetPosition01.Click += new System.EventHandler(this.btnSwarmSetPosition01_Click);
-            // 
-            // btnSwarmSetPosition02
-            // 
-            this.btnSwarmSetPosition02.Location = new System.Drawing.Point(563, 49);
-            this.btnSwarmSetPosition02.Name = "btnSwarmSetPosition02";
-            this.btnSwarmSetPosition02.Size = new System.Drawing.Size(112, 23);
-            this.btnSwarmSetPosition02.TabIndex = 17;
-            this.btnSwarmSetPosition02.Text = "Set Position 02";
-            this.btnSwarmSetPosition02.UseVisualStyleBackColor = true;
-            this.btnSwarmSetPosition02.Click += new System.EventHandler(this.btnSwarmSetPosition02_Click);
             // 
             // MainForm
             // 

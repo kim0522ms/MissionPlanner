@@ -1391,7 +1391,7 @@ namespace MissionPlanner.GCSViews
 
                     {
                         foreach (var pointLatLngAlt in pointlist.PrevNowNext())
-                        {
+                        { 
                             var prev = pointLatLngAlt.Item1;
                             var now = pointLatLngAlt.Item2;
                             var next = pointLatLngAlt.Item3;
@@ -6266,7 +6266,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 fence[0] = "Radius";
                 cmdParamNames.Add(MAVLink.MAV_CMD.FENCE_CIRCLE_EXCLUSION.ToString(), fence.ToArray());
                 cmdParamNames.Add(MAVLink.MAV_CMD.FENCE_CIRCLE_INCLUSION.ToString(), fence.ToArray());
-
             }
             if ((MAVLink.MAV_MISSION_TYPE)cmb_missiontype.SelectedValue == MAVLink.MAV_MISSION_TYPE.RALLY)
             {
